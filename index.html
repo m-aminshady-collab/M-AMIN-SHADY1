@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Viewport configuration for full responsiveness across mobile, tablet, and desktop -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohamed Amin — Telesales Arabic Account | CV</title>
+
+  <!-- Load Inter font for clean editorial typography and ATS readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN for responsive layout utilities -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Warm Editorial Palette Tokens */
+    :root {
+      --bg-alabaster: #FAF8F5;
+      --card-white: #FFFFFF;
+      --border-stone: #E7E2D8;
+      --text-primary: #1C252C;
+      --text-muted: #5A6570;
+      --accent-amber: #B45309;
+      --accent-amber-soft: #FEF3C7;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Prevent horizontal overflow across all devices */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-alabaster);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Minimalist "Welcome" splash screen with smooth cross-fade into the CV */
+    .welcome-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background-color: var(--bg-alabaster);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .welcome-splash.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    @keyframes welcomeFadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .welcome-title {
+      color: var(--text-primary);
+      animation: welcomeFadeUp 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* Lock body scroll while splash screen is active */
+    body.splash-locked {
+      overflow: hidden;
+    }
+
+    .cv-container {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body.splash-locked .cv-container {
+      opacity: 0.02;
+      transform: translateY(8px);
+    }
+
+    .cv-card {
+      background-color: var(--card-white);
+      border: 1px solid var(--border-stone);
+    }
+
+    .section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-amber);
+      border-bottom: 1px solid var(--border-stone);
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.7rem;
+    }
+
+    /* Single-page A4 print & PDF rules */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 7mm 9mm;
+      }
+
+      html,
+      body {
+        background: #FFFFFF !important;
+        color: #1C252C !important;
+        font-size: 9pt !important;
+        line-height: 1.28 !important;
+        overflow: visible !important;
+      }
+
+      .welcome-splash {
+        display: none !important;
+      }
+
+      .cv-wrapper {
+        padding: 0 !important;
+      }
+
+      .cv-container {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      .cv-card {
+        box-shadow: none !important;
+        border: 1px solid #D8D1C5 !important;
+        border-radius: 6px !important;
+        background: #FFFFFF !important;
+      }
+
+      .cv-header {
+        background-color: #FAF8F5 !important;
+        padding: 9px 14px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .cv-body {
+        padding: 10px 14px !important;
+      }
+
+      .cv-section {
+        margin-bottom: 7px !important;
+        break-inside: avoid;
+      }
+
+      .section-title {
+        font-size: 8pt !important;
+        margin-bottom: 4px !important;
+        padding-bottom: 2px !important;
+        color: #92400E !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .sub-card {
+        padding: 7px 10px !important;
+      }
+
+      a {
+        color: #1C252C !important;
+        text-decoration: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="splash-locked min-h-screen">
+
+  <!-- Minimalist "Welcome" Splash Screen -->
+  <div
+    id="welcomeSplash"
+    class="welcome-splash select-none"
+    role="button"
+    tabindex="0"
+    aria-label="Welcome — click to enter CV"
+    onclick="revealCV()"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();revealCV();}"
+  >
+    <div class="px-6 text-center">
+      <h1 class="welcome-title text-5xl font-extrabold tracking-tight sm:text-7xl md:text-8xl">
+        Welcome
+      </h1>
+      <div class="mx-auto mt-4 h-1 w-14 rounded-full bg-[#B45309]/70"></div>
+    </div>
+  </div>
+
+  <!-- Main Single-Page Digital CV (No top utility bar, buttons, or modals) -->
+  <div class="cv-wrapper mx-auto w-full px-3 py-5 sm:px-6 sm:py-8">
+    <main id="cvMain" class="cv-container cv-card mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_12px_32px_-12px_rgba(28,37,44,0.08)]">
+
+      <!-- Header / Contact Row -->
+      <header class="cv-header border-b border-[#E7E2D8] bg-[#FAF8F5] px-5 py-5 sm:px-8 sm:py-6">
+        <div class="flex flex-col justify-between gap-4 md:flex-row md:items-start md:gap-6">
+
+          <!-- Candidate Name, Target Role & Availability -->
+          <div class="min-w-0">
+            <h1 class="text-2xl font-extrabold tracking-tight text-[#1C252C] sm:text-3xl">
+              Mohamed Amin
+            </h1>
+            <p class="mt-1 text-sm font-bold text-[#B45309] sm:text-base">
+              Telesales Arabic Account
+            </p>
+            <p class="mt-2 inline-flex flex-wrap items-center gap-1.5 rounded-lg border border-[#E7E2D8] bg-white px-2.5 py-1 text-xs font-semibold text-[#1C252C]">
+              <span class="h-2 w-2 rounded-full bg-[#B45309]"></span>
+              <span>Full-time &bull; On-site &bull; Giza / Cairo, Egypt &bull; Immediate Availability</span>
+            </p>
+          </div>
+
+          <!-- Contact & Editable Placeholders -->
+          <div class="flex flex-col gap-1.5 text-sm text-[#5A6570] md:items-end md:text-right">
+            <a
+              href="tel:01018737711"
+              class="inline-flex items-center gap-2 font-semibold text-[#1C252C] transition hover:text-[#B45309]"
+            >
+              <svg class="h-4 w-4 shrink-0 text-[#B45309]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span>01018737711</span>
+            </a>
+
+            <!-- Editable Location Placeholder -->
+            <div class="inline-flex items-center gap-2 font-medium text-[#1C252C]">
+              <svg class="h-4 w-4 shrink-0 text-[#B45309]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span data-placeholder="location">Giza / Cairo, Egypt (Editable)</span>
+            </div>
+
+            <!-- Editable Email Placeholder -->
+            <div class="inline-flex items-center gap-2 break-all text-xs font-medium text-[#5A6570] sm:text-sm">
+              <svg class="h-4 w-4 shrink-0 text-[#B45309]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span data-placeholder="email">mohamed.amin.email@example.com (Editable)</span>
+            </div>
+
+            <!-- Editable Contact / Profile Link Placeholder -->
+            <div class="text-xs font-medium text-[#5A6570] sm:text-sm">
+              <span data-placeholder="contact-link">linkedin.com/in/your-profile (Editable)</span>
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- Main CV Body -->
+      <div class="cv-body px-5 py-5 sm:px-8 sm:py-6">
+
+        <!-- Summary -->
+        <section class="cv-section mb-5">
+          <h2 class="section-title">Summary</h2>
+          <p class="text-sm leading-relaxed text-[#1C252C] sm:text-[15px]">
+            Management Information Systems (MIS) student with persuasive Arabic communication, practical customer-facing service background, and structured lead/data tracking habits. Capable of handling 50+ calls per day with 40 WPM typing accuracy, disciplined call follow-ups, and clean CRM, Excel, and Google Sheets logging for full-time on-site Telesales Arabic Account roles in Giza / Cairo.
+          </p>
+        </section>
+
+        <!-- Previous Work & Practical Experience -->
+        <section class="cv-section mb-5">
+          <h2 class="section-title">Previous Work &amp; Practical Experience</h2>
+          <div class="space-y-2.5">
+
+            <!-- Role 1: Cashier & Customer Service (6 months) at Wahet Al-Yemen Restaurant -->
+            <div class="sub-card rounded-xl border border-[#E7E2D8] bg-white p-3.5">
+              <div class="flex flex-col justify-between gap-1 sm:flex-row sm:items-baseline">
+                <h3 class="text-sm font-bold text-[#1C252C] sm:text-[15px]">
+                  Cashier &amp; Customer Service &mdash; Wahet Al-Yemen Restaurant
+                </h3>
+                <span class="text-xs font-semibold text-[#B45309]">6 Months</span>
+              </div>
+              <p class="mt-1 text-xs leading-relaxed text-[#5A6570] sm:text-sm">
+                Welcomed customers warmly, identified order needs, handled accurate order processing and billing, and resolved customer inquiries and complaints politely.
+              </p>
+            </div>
+
+            <!-- Role 2: Order Taker at Sizzler House Steak -->
+            <div class="sub-card rounded-xl border border-[#E7E2D8] bg-white p-3.5">
+              <div class="flex flex-col justify-between gap-1 sm:flex-row sm:items-baseline">
+                <h3 class="text-sm font-bold text-[#1C252C] sm:text-[15px]">
+                  Order Taker &mdash; Sizzler House Steak
+                </h3>
+                <span class="text-xs font-semibold text-[#B45309]">Customer Orders &amp; Coordination</span>
+              </div>
+              <p class="mt-1 text-xs leading-relaxed text-[#5A6570] sm:text-sm">
+                Captured customer orders accurately, clarified menu and customization details clearly, and coordinated smoothly with floor/kitchen operations and ordering systems.
+              </p>
+            </div>
+
+            <!-- Role 3: System & Application Experience (Web & Mobile Apps) -->
+            <div class="sub-card rounded-xl border border-[#E7E2D8] bg-white p-3.5">
+              <div class="flex flex-col justify-between gap-1 sm:flex-row sm:items-baseline">
+                <h3 class="text-sm font-bold text-[#1C252C] sm:text-[15px]">
+                  System &amp; Application Experience (Web &amp; Mobile Apps)
+                </h3>
+                <span class="text-xs font-semibold text-[#B45309]">Web Browsers &amp; Mobile Apps</span>
+              </div>
+              <p class="mt-1 text-xs leading-relaxed text-[#5A6570] sm:text-sm">
+                Practical comfort navigating operational systems, order/account workflows, and digital tools across both web browsers and mobile applications with attention to accuracy.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Practical Project -->
+        <section class="cv-section mb-5">
+          <h2 class="section-title">Practical Project</h2>
+          <div class="sub-card rounded-xl border border-[#E7E2D8] bg-[#FAF8F5] p-3.5">
+            <div class="flex flex-col justify-between gap-1 sm:flex-row sm:items-baseline">
+              <h3 class="text-sm font-bold text-[#1C252C] sm:text-[15px]">
+                Fried Chicken Ordering System (JavaScript)
+              </h3>
+              <span class="text-xs font-semibold text-[#B45309]">JavaScript &bull; Arabic Interface</span>
+            </div>
+            <p class="mt-1 text-xs leading-relaxed text-[#5A6570] sm:text-sm">
+              Built an Arabic restaurant ordering web interface designed for smooth customer item selection, clear order flow, dynamic cart/total updates, and structured order summary tracking.
+            </p>
+          </div>
+        </section>
+
+        <!-- Core Skills & Metrics + Education -->
+        <div class="grid grid-cols-1 gap-5 md:grid-cols-12">
+
+          <!-- Core Skills & Metrics -->
+          <section class="cv-section md:col-span-7">
+            <h2 class="section-title">Core Skills &amp; Metrics</h2>
+            <ul class="space-y-1.5 text-xs text-[#1C252C] sm:text-sm">
+              <li class="flex items-start gap-2">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#B45309]"></span>
+                <span><strong>50+ Calls / Day:</strong> Consistent daily outbound/inbound call capacity, lead follow-ups, and objection handling.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#B45309]"></span>
+                <span><strong>40 WPM Typing Speed:</strong> Fast, accurate call notes and real-time account updates during live conversations.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#B45309]"></span>
+                <span><strong>CRM, Excel &amp; Google Sheets:</strong> Structured lead tracking, call logging, status updates, and follow-up schedules.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#B45309]"></span>
+                <span><strong>Arabic &amp; MIS Background:</strong> Fluent/persuasive Arabic communication paired with Management Information Systems data organization.</span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Education -->
+          <section class="cv-section md:col-span-5">
+            <h2 class="section-title">Education</h2>
+            <div class="sub-card rounded-xl border border-[#E7E2D8] bg-white p-3.5">
+              <h3 class="text-sm font-bold text-[#1C252C]">
+                Management Information Systems (MIS) Student
+              </h3>
+              <p class="mt-1 text-xs text-[#5A6570]" data-placeholder="education-details">
+                Institution / University &bull; Expected Graduation Year (Editable)
+              </p>
+              <div class="mt-2.5 flex items-center justify-between border-t border-[#E7E2D8] pt-2 text-xs">
+                <span class="font-semibold text-[#1C252C]">Arabic</span>
+                <span class="rounded bg-[#FEF3C7] px-2 py-0.5 font-semibold text-[#92400E]">Native / Fluent</span>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      let isRevealed = false;
+      let splashTimer = null;
+
+      /**
+       * Smoothly cross-fades out the "Welcome" splash screen and reveals the CV.
+       */
+      function revealCV() {
+        if (isRevealed) return;
+        isRevealed = true;
+
+        if (splashTimer) {
+          clearTimeout(splashTimer);
+          splashTimer = null;
+        }
+
+        const splash = document.getElementById('welcomeSplash');
+        if (splash) {
+          splash.classList.add('is-hidden');
+        }
+        document.body.classList.remove('splash-locked');
+      }
+
+      window.revealCV = revealCV;
+
+      window.addEventListener('DOMContentLoaded', function () {
+        splashTimer = setTimeout(function () {
+          revealCV();
+        }, 1200);
+      });
+
+      window.addEventListener('beforeprint', function () {
+        revealCV();
+      });
+    })();
+  </script>
+</body>
+</html>
